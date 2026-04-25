@@ -1,0 +1,39 @@
+name: Lua Syntax Check
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  syntax-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Lua
+        run: sudo apt-get update && sudo apt-get install -y lua5.4
+
+      - name: Syntax Check - fivesawMiner.lua
+        run: |
+          echo "=== Checking fivesawMiner.lua ==="
+          luac5.4 -p fivesawMiner.lua && echo "✅ Syntax OK" || echo "❌ Syntax Error"
+
+      - name: Syntax Check - Source Modules
+        run: |
+          echo "=== Checking source modules ==="
+          for f in src/*.lua; do
+            echo -n "  $f ... "
+            luac5.4 -p "$f" && echo "✅" || echo "❌"
+          done
+
+      - name: Line Count
+        run: |
+          echo "=== Stats ==="
+          echo "Bundled:"
+          wc -l fivesawMiner.lua
+          ls -lh fivesawMiner.lua
+          echo ""
+          echo "Source modules:"
+          wc -l src/*.lua
