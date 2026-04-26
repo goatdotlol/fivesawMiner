@@ -2616,7 +2616,8 @@ __fsm_preload["fivesawMiner/init"] = function()
     -- ═══════════════════════════════════════════════════════════════
     -- CHAT DISPATCHER
     -- ═══════════════════════════════════════════════════════════════
-    registerChatMessage(function(msg)
+    registerMessageEvent(function(msg, overlay, json)
+        if overlay then return end
         local text = msg:gsub("§.", "")
     
         -- Forward to macro
