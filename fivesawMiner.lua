@@ -124,6 +124,7 @@ __fsm_preload["fivesawMiner/core"] = function()
     }
     
     function GameState.update()
+        if not player then return end
         local tab = player.getTabList and player.getTabList() or {}
     
         -- Detect location from tablist "Area: xxx"
@@ -962,6 +963,7 @@ __fsm_preload["fivesawMiner/utils"] = function()
     
     --- Parse commissions from tablist
     function CommissionUtil.getCurrentCommissions()
+        if not player then return {} end
         local tab = player.getTabList and player.getTabList() or {}
         local comms = {}
         local foundHeader = false

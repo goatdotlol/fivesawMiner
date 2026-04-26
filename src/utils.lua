@@ -74,6 +74,7 @@ local CommissionUtil = {}
 
 --- Parse commissions from tablist
 function CommissionUtil.getCurrentCommissions()
+    if not player then return {} end
     local tab = player.getTabList and player.getTabList() or {}
     local comms = {}
     local foundHeader = false

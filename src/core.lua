@@ -105,6 +105,7 @@ local GameState = {
 }
 
 function GameState.update()
+    if not player then return end
     local tab = player.getTabList and player.getTabList() or {}
 
     -- Detect location from tablist "Area: xxx"
