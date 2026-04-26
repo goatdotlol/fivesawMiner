@@ -448,8 +448,10 @@ end)
 -- INIT
 -- ═══════════════════════════════════════════════════════════════
 RouteManager.init()
-player.addMessage("§6═══════════════════════════════════")
-player.addMessage("§6  FiveSaw Miner v1.0 §7— Loaded")
-player.addMessage("§7  Press §eF6 §7for config")
-player.addMessage("§7  Type §a#fshelp §7for commands")
-player.addMessage("§6═══════════════════════════════════")
+if player then
+    player.addMessage("§6═══════════════════════════════════")
+    player.addMessage("§6  FiveSaw Miner v1.0 §7— Loaded")
+    player.addMessage("§7  Press §eF6 §7for config")
+    player.addMessage("§7  Type §a#fshelp §7for commands")
+    player.addMessage("§6═══════════════════════════════════")
+end
