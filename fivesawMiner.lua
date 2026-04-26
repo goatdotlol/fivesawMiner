@@ -2705,92 +2705,93 @@ __fsm_preload["fivesawMiner/init"] = function()
     -- ═══════════════════════════════════════════════════════════════
     -- IMGUI CONFIG PANEL + HUD (1:1 MightyMinerConfig + CommissionHUD)
     -- ═══════════════════════════════════════════════════════════════
-    local tui = require("tui")
+    local imgui = require("imgui")
     local showConfig = false
     
-    registerImGuiRenderEvent(function()
-        -- Toggle key (F6)
-        if tui.isKeyPressed(tui.Keys.F6) then
+    registerKeyEvent(function(key, action)
+        if key == 295 and action == "Press" then
             showConfig = not showConfig
         end
+    end)
+    
+    registerImGuiRenderEvent(function()
     
         -- ── HUD OVERLAY ──
         if MacroManager.isEnabled() then
             local macro = MacroManager.currentMacro
-            local w = tui.getWindowWidth()
-            tui.setNextWindowPos(w - 220, 10)
-            tui.setNextWindowSize(210, 0)
-            if tui.begin("FiveSaw Status", true) then
-                tui.text("§a" .. macro:getName())
-                tui.separator()
+            imgui.setNextWindowPos(10, 10, imgui.constants.Cond_FirstUseEver)
+            imgui.setNextWindowSize(210, 0, imgui.constants.Cond_FirstUseEver)
+            if imgui.begin("FiveSaw Status", true) then
+                imgui.text("§a" .. macro:getName())
+                imgui.separator()
     
                 -- Uptime
                 local uptimeMs = macro.uptime:getAccumMs()
                 local mins = math.floor(uptimeMs / 60000)
                 local secs = math.floor((uptimeMs % 60000) / 1000)
-                tui.text("Uptime: " .. string.format("%02d:%02d", mins, secs))
+                imgui.text("Uptime: " .. string.format("%02d:%02d", mins, secs))
     
                 -- Location
-                tui.text("Location: " .. GameState.currentLocation)
-                tui.text("SubLoc: " .. GameState.currentSubLocation)
+                imgui.text("Location: " .. GameState.currentLocation)
+                imgui.text("SubLoc: " .. GameState.currentSubLocation)
     
                 -- Macro-specific info
                 if macro._state then
-                    tui.text("State: §e" .. macro._state)
+                    imgui.text("State: §e" .. macro._state)
                 end
                 if macro._commissionCount then
-                    tui.text("Commissions: §b" .. macro._commissionCount)
+                    imgui.text("Commissions: §b" .. macro._commissionCount)
                 end
                 if macro._currentCommission then
-                    tui.text("Current: §d" .. macro._currentCommission)
+                    imgui.text("Current: §d" .. macro._currentCommission)
                 end
     
                 -- BlockMiner status
                 if BlockMiner.enabled then
-                    tui.text("Miner: §a" .. BlockMiner.state)
+                    imgui.text("Miner: §a" .. BlockMiner.state)
                     if BlockMiner.targetBlock then
-                        tui.text("Target: " .. BlockMiner.targetBlock.x .. "," .. BlockMiner.targetBlock.y .. "," .. BlockMiner.targetBlock.z)
+                        imgui.text("Target: " .. BlockMiner.targetBlock.x .. "," .. BlockMiner.targetBlock.y .. "," .. BlockMiner.targetBlock.z)
                     end
                 end
     
-                tui.finish()
+                imgui.endBegin()
             end
         end
     
         -- ── CONFIG WINDOW ──
         if not showConfig then return end
     
-        tui.setNextWindowPos(50, 50)
-        tui.setNextWindowSize(400, 0)
-        if tui.begin("FiveSaw Miner Config (F6)", true) then
+        imgui.setNextWindowPos(50, 50)
+        imgui.setNextWindowSize(400, 0)
+        if imgui.begin("FiveSaw Miner Config (F6)", true) then
     
             -- Macro Type
-            tui.text("§6Macro Type")
+            imgui.text("§6Macro Type")
             local macroNames = { "Commission", "Glacial", "Mining", "Route Miner" }
             for i, name in ipairs(macroNames) do
                 local selected = Config.macroType == (i - 1)
-                if tui.radioButton(name, selected) then
+                if imgui.radioButton(name, selected) then
                     Config.macroType = i - 1
                 end
             end
-            tui.separator()
+            imgui.separator()
     
             -- Mining Settings
-            tui.text("§6Mining Settings")
+            imgui.text("§6Mining Settings")
             local oreNames = { "Mithril", "Diamond", "Emerald", "Redstone", "Lapis", "Gold", "Iron", "Coal", "Glacite", "Hardstone", "Umber", "Tungsten" }
             for i, name in ipairs(oreNames) do
                 local selected = Config.oreType == (i - 1)
-                if tui.radioButton(name, selected) then
+                if imgui.radioButton(name, selected) then
                     Config.oreType = i - 1
                 end
             end
-            tui.separator()
+            imgui.separator()
     
             -- Speed
-            tui.text("Mining Speed: " .. Config.miningSpeed)
-            Config.miningSpeed = tui.sliderInt("##speed", Config.miningSpeed, 100, 5000) or Config.miningSpeed
-            Config.autoDetectSpeed = tui.checkbox("Auto-Detect Speed", Config.autoDetectSpeed)
-            if tui.button("Detect Now") then
+            imgui.text("Mining Speed: " .. Config.miningSpeed)
+            Config.miningSpeed = imgui.sliderInt("##speed", Config.miningSpeed, 100, 5000) or Config.miningSpeed
+            Config.autoDetectSpeed = imgui.checkbox("Auto-Detect Speed", Config.autoDetectSpeed)
+            if imgui.button("Detect Now") then
                 local detected = utils.MiningSpeedDetector.detect(Config.miningTool)
                 if detected then
                     Config.miningSpeed = detected
@@ -2807,77 +2808,77 @@ __fsm_preload["fivesawMiner/init"] = function()
             end
     
             -- Tool
-            tui.text("Mining Tool:")
-            Config.miningTool = tui.inputText("##tool", Config.miningTool) or Config.miningTool
-            tui.separator()
+            imgui.text("Mining Tool:")
+            Config.miningTool = imgui.inputText("##tool", Config.miningTool) or Config.miningTool
+            imgui.separator()
     
             -- Mithril options (only show for mithril ore type)
             if Config.oreType == 0 then
-                tui.text("§6Mithril Options")
-                Config.mineGrayMithril = tui.checkbox("Gray Mithril", Config.mineGrayMithril)
-                Config.mineGreenMithril = tui.checkbox("Green Mithril", Config.mineGreenMithril)
-                Config.mineBlueMithril = tui.checkbox("Blue Mithril", Config.mineBlueMithril)
-                Config.mineTitanium = tui.checkbox("Titanium", Config.mineTitanium)
-                tui.separator()
+                imgui.text("§6Mithril Options")
+                Config.mineGrayMithril = imgui.checkbox("Gray Mithril", Config.mineGrayMithril)
+                Config.mineGreenMithril = imgui.checkbox("Green Mithril", Config.mineGreenMithril)
+                Config.mineBlueMithril = imgui.checkbox("Blue Mithril", Config.mineBlueMithril)
+                Config.mineTitanium = imgui.checkbox("Titanium", Config.mineTitanium)
+                imgui.separator()
             end
     
             -- Pickaxe Ability
-            tui.text("§6Pickaxe Ability")
-            Config.usePickaxeAbility = tui.checkbox("Use Pickaxe Ability", Config.usePickaxeAbility)
+            imgui.text("§6Pickaxe Ability")
+            Config.usePickaxeAbility = imgui.checkbox("Use Pickaxe Ability", Config.usePickaxeAbility)
             if Config.usePickaxeAbility then
                 local abilities = { "MINING_SPEED_BOOST", "PICKOBULUS" }
                 for _, ab in ipairs(abilities) do
-                    if tui.radioButton(ab, Config.pickaxeAbility == ab) then
+                    if imgui.radioButton(ab, Config.pickaxeAbility == ab) then
                         Config.pickaxeAbility = ab
                     end
                 end
             end
-            tui.separator()
+            imgui.separator()
     
             -- Commission
             if Config.macroType == 0 then
-                tui.text("§6Commission Settings")
-                if tui.radioButton("Emissary", Config.claimMethod == 0) then Config.claimMethod = 0 end
-                if tui.radioButton("Royal Pigeon", Config.claimMethod == 1) then Config.claimMethod = 1 end
+                imgui.text("§6Commission Settings")
+                if imgui.radioButton("Emissary", Config.claimMethod == 0) then Config.claimMethod = 0 end
+                if imgui.radioButton("Royal Pigeon", Config.claimMethod == 1) then Config.claimMethod = 1 end
     
-                tui.text("Slayer Weapon:")
-                Config.slayerWeapon = tui.inputText("##slayer", Config.slayerWeapon) or Config.slayerWeapon
-                tui.separator()
+                imgui.text("Slayer Weapon:")
+                Config.slayerWeapon = imgui.inputText("##slayer", Config.slayerWeapon) or Config.slayerWeapon
+                imgui.separator()
             end
     
             -- Failsafe
-            tui.text("§6Failsafe")
-            Config.failsafeEnabled = tui.checkbox("Enable Failsafes", Config.failsafeEnabled)
-            tui.separator()
+            imgui.text("§6Failsafe")
+            Config.failsafeEnabled = imgui.checkbox("Enable Failsafes", Config.failsafeEnabled)
+            imgui.separator()
     
             -- Coefficients
-            tui.text("§6Advanced")
-            Config.sneakWhileMining = tui.checkbox("Sneak While Mining", Config.sneakWhileMining)
-            Config.debugMode = tui.checkbox("Debug Mode", Config.debugMode)
+            imgui.text("§6Advanced")
+            Config.sneakWhileMining = imgui.checkbox("Sneak While Mining", Config.sneakWhileMining)
+            Config.debugMode = imgui.checkbox("Debug Mode", Config.debugMode)
     
-            Config.rotationTime = tui.sliderInt("Rotation Time##rot", Config.rotationTime, 100, 1000) or Config.rotationTime
-            Config.oreRespawnWait = tui.sliderInt("Ore Respawn Wait (s)##wait", Config.oreRespawnWait, 1, 30) or Config.oreRespawnWait
+            Config.rotationTime = imgui.sliderInt("Rotation Time##rot", Config.rotationTime, 100, 1000) or Config.rotationTime
+            Config.oreRespawnWait = imgui.sliderInt("Ore Respawn Wait (s)##wait", Config.oreRespawnWait, 1, 30) or Config.oreRespawnWait
     
-            tui.separator()
+            imgui.separator()
     
             -- Drill Refuel
-            tui.text("§6Drill Refuel")
-            Config.autoDrillRefuel = tui.checkbox("Auto Drill Refuel", Config.autoDrillRefuel)
+            imgui.text("§6Drill Refuel")
+            Config.autoDrillRefuel = imgui.checkbox("Auto Drill Refuel", Config.autoDrillRefuel)
             if Config.autoDrillRefuel then
-                Config.drillFuelThreshold = tui.sliderInt("Fuel Threshold##fuel", Config.drillFuelThreshold, 100, 10000) or Config.drillFuelThreshold
-                if tui.radioButton("Volta##fuel", Config.drillFuelType == "Volta") then Config.drillFuelType = "Volta" end
-                if tui.radioButton("Oil Barrel##fuel", Config.drillFuelType == "Oil Barrel") then Config.drillFuelType = "Oil Barrel" end
+                Config.drillFuelThreshold = imgui.sliderInt("Fuel Threshold##fuel", Config.drillFuelThreshold, 100, 10000) or Config.drillFuelThreshold
+                if imgui.radioButton("Volta##fuel", Config.drillFuelType == "Volta") then Config.drillFuelType = "Volta" end
+                if imgui.radioButton("Oil Barrel##fuel", Config.drillFuelType == "Oil Barrel") then Config.drillFuelType = "Oil Barrel" end
             end
-            tui.separator()
+            imgui.separator()
     
             -- Toggle button
             if MacroManager.isEnabled() then
-                if tui.button("§c■ Stop Macro") then MacroManager.disable() end
+                if imgui.button("§c■ Stop Macro") then MacroManager.disable() end
             else
-                if tui.button("§a▶ Start Macro") then MacroManager.enable() end
+                if imgui.button("§a▶ Start Macro") then MacroManager.enable() end
             end
     
-            tui.finish()
+            imgui.endBegin()
         end
     end)
     
