@@ -350,7 +350,7 @@ function CommissionMacro:_goToEmissary()
     -- Use fivesawUtils pathfinding
     local fivetone = require("fivesawUtils")
     if fivetone then
-        fivetone.goto(math.floor(emissary.x), math.floor(emissary.y), math.floor(emissary.z), function(success)
+        fivetone.navigateTo(math.floor(emissary.x), math.floor(emissary.y), math.floor(emissary.z), function(success)
             if success then
                 self:log("Reached emissary, interacting...")
                 -- Use NPC interaction to open GUI and click claim slot
@@ -460,7 +460,7 @@ function GlacialMacro:onTick()
             self:log("Found glacite vein at " .. vein.x .. ", " .. vein.y .. ", " .. vein.z)
             local fivetone = require("fivesawUtils")
             if fivetone then
-                fivetone.goto(vein.x, vein.y, vein.z, function(success)
+                fivetone.navigateTo(vein.x, vein.y, vein.z, function(success)
                     if success then
                         self:log("Reached vein, resuming mining")
                         self._isMining = false
@@ -506,7 +506,7 @@ function GlacialMacro:onTick()
             if emissary then
                 local fivetone = require("fivesawUtils")
                 if fivetone then
-                    fivetone.goto(math.floor(emissary.x), math.floor(emissary.y), math.floor(emissary.z), function(success)
+                    fivetone.navigateTo(math.floor(emissary.x), math.floor(emissary.y), math.floor(emissary.z), function(success)
                         if success then
                             NPCInteraction.interactWithNPC(emissary.name, function()
                                 self._state = "STARTING"
@@ -586,7 +586,7 @@ function RouteMinerMacro:onTick()
         -- Use fivesawUtils pathfinding
         local fivetone = require("fivesawUtils")
         if fivetone then
-            fivetone.goto(wp.x, wp.y, wp.z, function(success)
+            fivetone.navigateTo(wp.x, wp.y, wp.z, function(success)
                 if success then
                     self:log("Reached waypoint " .. self._currentWaypoint)
                     self._state = "MINING"
