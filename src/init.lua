@@ -183,7 +183,8 @@ end)
 -- ═══════════════════════════════════════════════════════════════
 -- COMMANDS
 -- ═══════════════════════════════════════════════════════════════
-registerChatMessage(function(msg)
+registerMessageEvent(function(msg, overlay, json)
+    if overlay then return end
     local text = msg:gsub("§.", "")
     if not text:match("^#") then return end
 
