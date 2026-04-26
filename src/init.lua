@@ -257,8 +257,11 @@ local imgui = require("imgui")
 local showConfig = false
 
 registerKeyEvent(function(key, action)
-    if key == 295 and action == "Press" then
-        showConfig = not showConfig
+    if key == 295 then
+        if action == "Press" or action == 1 then
+            showConfig = not showConfig
+            player.addMessage("§a[FiveSaw] Config toggled: " .. tostring(showConfig))
+        end
     end
 end)
 
@@ -269,7 +272,7 @@ registerImGuiRenderEvent(function()
         local macro = MacroManager.currentMacro
         imgui.setNextWindowPos(10, 10, imgui.constants.Cond_FirstUseEver)
         imgui.setNextWindowSize(210, 0, imgui.constants.Cond_FirstUseEver)
-        if imgui.begin("FiveSaw Status", true) then
+        if imgui.begin("FiveSaw Status") then
             imgui.text("§a" .. macro:getName())
             imgui.separator()
 
@@ -311,7 +314,7 @@ registerImGuiRenderEvent(function()
 
     imgui.setNextWindowPos(50, 50)
     imgui.setNextWindowSize(400, 0)
-    if imgui.begin("FiveSaw Miner Config (F6)", true) then
+    if imgui.begin("FiveSaw Miner Config (F6)") then
 
         -- Macro Type
         imgui.text("§6Macro Type")
@@ -337,8 +340,8 @@ registerImGuiRenderEvent(function()
 
         -- Speed
         imgui.text("Mining Speed: " .. Config.miningSpeed)
-        Config.miningSpeed = imgui.sliderInt("##speed", Config.miningSpeed, 100, 5000) or Config.miningSpeed
-        Config.autoDetectSpeed = imgui.checkbox("Auto-Detect Speed", Config.autoDetectSpeed)
+        local c_miningSpeed, v_miningSpeed = imgui.sliderInt("##speed", Config.miningSpeed, 100, 5000); if c_miningSpeed then Config.miningSpeed = v_miningSpeed end
+        local c_autoDetectSpeed, v_autoDetectSpeed = imgui.checkbox("Auto-Detect Speed", Config.autoDetectSpeed); if c_autoDetectSpeed then Config.autoDetectSpeed = v_autoDetectSpeed end
         if imgui.button("Detect Now") then
             local detected = utils.MiningSpeedDetector.detect(Config.miningTool)
             if detected then
@@ -357,22 +360,22 @@ registerImGuiRenderEvent(function()
 
         -- Tool
         imgui.text("Mining Tool:")
-        Config.miningTool = imgui.inputText("##tool", Config.miningTool) or Config.miningTool
+        local c_miningTool, v_miningTool = imgui.inputText("##tool", Config.miningTool); if c_miningTool then Config.miningTool = v_miningTool end
         imgui.separator()
 
         -- Mithril options (only show for mithril ore type)
         if Config.oreType == 0 then
             imgui.text("§6Mithril Options")
-            Config.mineGrayMithril = imgui.checkbox("Gray Mithril", Config.mineGrayMithril)
-            Config.mineGreenMithril = imgui.checkbox("Green Mithril", Config.mineGreenMithril)
-            Config.mineBlueMithril = imgui.checkbox("Blue Mithril", Config.mineBlueMithril)
-            Config.mineTitanium = imgui.checkbox("Titanium", Config.mineTitanium)
+            local c_mineGrayMithril, v_mineGrayMithril = imgui.checkbox("Gray Mithril", Config.mineGrayMithril); if c_mineGrayMithril then Config.mineGrayMithril = v_mineGrayMithril end
+            local c_mineGreenMithril, v_mineGreenMithril = imgui.checkbox("Green Mithril", Config.mineGreenMithril); if c_mineGreenMithril then Config.mineGreenMithril = v_mineGreenMithril end
+            local c_mineBlueMithril, v_mineBlueMithril = imgui.checkbox("Blue Mithril", Config.mineBlueMithril); if c_mineBlueMithril then Config.mineBlueMithril = v_mineBlueMithril end
+            local c_mineTitanium, v_mineTitanium = imgui.checkbox("Titanium", Config.mineTitanium); if c_mineTitanium then Config.mineTitanium = v_mineTitanium end
             imgui.separator()
         end
 
         -- Pickaxe Ability
         imgui.text("§6Pickaxe Ability")
-        Config.usePickaxeAbility = imgui.checkbox("Use Pickaxe Ability", Config.usePickaxeAbility)
+        local c_usePickaxeAbility, v_usePickaxeAbility = imgui.checkbox("Use Pickaxe Ability", Config.usePickaxeAbility); if c_usePickaxeAbility then Config.usePickaxeAbility = v_usePickaxeAbility end
         if Config.usePickaxeAbility then
             local abilities = { "MINING_SPEED_BOOST", "PICKOBULUS" }
             for _, ab in ipairs(abilities) do
@@ -390,30 +393,30 @@ registerImGuiRenderEvent(function()
             if imgui.radioButton("Royal Pigeon", Config.claimMethod == 1) then Config.claimMethod = 1 end
 
             imgui.text("Slayer Weapon:")
-            Config.slayerWeapon = imgui.inputText("##slayer", Config.slayerWeapon) or Config.slayerWeapon
+            local c_slayerWeapon, v_slayerWeapon = imgui.inputText("##slayer", Config.slayerWeapon); if c_slayerWeapon then Config.slayerWeapon = v_slayerWeapon end
             imgui.separator()
         end
 
         -- Failsafe
         imgui.text("§6Failsafe")
-        Config.failsafeEnabled = imgui.checkbox("Enable Failsafes", Config.failsafeEnabled)
+        local c_failsafeEnabled, v_failsafeEnabled = imgui.checkbox("Enable Failsafes", Config.failsafeEnabled); if c_failsafeEnabled then Config.failsafeEnabled = v_failsafeEnabled end
         imgui.separator()
 
         -- Coefficients
         imgui.text("§6Advanced")
-        Config.sneakWhileMining = imgui.checkbox("Sneak While Mining", Config.sneakWhileMining)
-        Config.debugMode = imgui.checkbox("Debug Mode", Config.debugMode)
+        local c_sneakWhileMining, v_sneakWhileMining = imgui.checkbox("Sneak While Mining", Config.sneakWhileMining); if c_sneakWhileMining then Config.sneakWhileMining = v_sneakWhileMining end
+        local c_debugMode, v_debugMode = imgui.checkbox("Debug Mode", Config.debugMode); if c_debugMode then Config.debugMode = v_debugMode end
 
-        Config.rotationTime = imgui.sliderInt("Rotation Time##rot", Config.rotationTime, 100, 1000) or Config.rotationTime
-        Config.oreRespawnWait = imgui.sliderInt("Ore Respawn Wait (s)##wait", Config.oreRespawnWait, 1, 30) or Config.oreRespawnWait
+        local c_rotationTime, v_rotationTime = imgui.sliderInt("Rotation Time##rot", Config.rotationTime, 100, 1000); if c_rotationTime then Config.rotationTime = v_rotationTime end
+        local c_oreRespawnWait, v_oreRespawnWait = imgui.sliderInt("Ore Respawn Wait (s)##wait", Config.oreRespawnWait, 1, 30); if c_oreRespawnWait then Config.oreRespawnWait = v_oreRespawnWait end
 
         imgui.separator()
 
         -- Drill Refuel
         imgui.text("§6Drill Refuel")
-        Config.autoDrillRefuel = imgui.checkbox("Auto Drill Refuel", Config.autoDrillRefuel)
+        local c_autoDrillRefuel, v_autoDrillRefuel = imgui.checkbox("Auto Drill Refuel", Config.autoDrillRefuel); if c_autoDrillRefuel then Config.autoDrillRefuel = v_autoDrillRefuel end
         if Config.autoDrillRefuel then
-            Config.drillFuelThreshold = imgui.sliderInt("Fuel Threshold##fuel", Config.drillFuelThreshold, 100, 10000) or Config.drillFuelThreshold
+            local c_drillFuelThreshold, v_drillFuelThreshold = imgui.sliderInt("Fuel Threshold##fuel", Config.drillFuelThreshold, 100, 10000); if c_drillFuelThreshold then Config.drillFuelThreshold = v_drillFuelThreshold end
             if imgui.radioButton("Volta##fuel", Config.drillFuelType == "Volta") then Config.drillFuelType = "Volta" end
             if imgui.radioButton("Oil Barrel##fuel", Config.drillFuelType == "Oil Barrel") then Config.drillFuelType = "Oil Barrel" end
         end
