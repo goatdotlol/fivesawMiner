@@ -2714,7 +2714,7 @@ __fsm_preload["fivesawMiner/init"] = function()
         if key == 295 then
             if action == "Press" or action == 1 then
                 showConfig = not showConfig
-                player.addMessage("§a[FiveSaw] Config toggled: " .. tostring(showConfig))
+                if player then player.addMessage("§a[FiveSaw] Config toggled: " .. tostring(showConfig)) end
             end
         end
     end)
@@ -2775,7 +2775,8 @@ __fsm_preload["fivesawMiner/init"] = function()
             local macroNames = { "Commission", "Glacial", "Mining", "Route Miner" }
             for i, name in ipairs(macroNames) do
                 local selected = Config.macroType == (i - 1)
-                if imgui.radioButton(name, selected) then
+                local c_clicked = imgui.selectable(name, selected)
+                if c_clicked then
                     Config.macroType = i - 1
                 end
             end
@@ -2786,7 +2787,8 @@ __fsm_preload["fivesawMiner/init"] = function()
             local oreNames = { "Mithril", "Diamond", "Emerald", "Redstone", "Lapis", "Gold", "Iron", "Coal", "Glacite", "Hardstone", "Umber", "Tungsten" }
             for i, name in ipairs(oreNames) do
                 local selected = Config.oreType == (i - 1)
-                if imgui.radioButton(name, selected) then
+                local c_clicked = imgui.selectable(name, selected)
+                if c_clicked then
                     Config.oreType = i - 1
                 end
             end
@@ -2833,7 +2835,8 @@ __fsm_preload["fivesawMiner/init"] = function()
             if Config.usePickaxeAbility then
                 local abilities = { "MINING_SPEED_BOOST", "PICKOBULUS" }
                 for _, ab in ipairs(abilities) do
-                    if imgui.radioButton(ab, Config.pickaxeAbility == ab) then
+                    local c_clicked = imgui.selectable(ab, Config.pickaxeAbility == ab)
+                    if c_clicked then
                         Config.pickaxeAbility = ab
                     end
                 end
@@ -2843,8 +2846,8 @@ __fsm_preload["fivesawMiner/init"] = function()
             -- Commission
             if Config.macroType == 0 then
                 imgui.text("§6Commission Settings")
-                if imgui.radioButton("Emissary", Config.claimMethod == 0) then Config.claimMethod = 0 end
-                if imgui.radioButton("Royal Pigeon", Config.claimMethod == 1) then Config.claimMethod = 1 end
+                local c1 = imgui.selectable("Emissary", Config.claimMethod == 0); if c1 then Config.claimMethod = 0 end
+                local c2 = imgui.selectable("Royal Pigeon", Config.claimMethod == 1); if c2 then Config.claimMethod = 1 end
     
                 imgui.text("Slayer Weapon:")
                 local c_slayerWeapon, v_slayerWeapon = imgui.inputText("##slayer", Config.slayerWeapon); if c_slayerWeapon then Config.slayerWeapon = v_slayerWeapon end
@@ -2871,8 +2874,8 @@ __fsm_preload["fivesawMiner/init"] = function()
             local c_autoDrillRefuel, v_autoDrillRefuel = imgui.checkbox("Auto Drill Refuel", Config.autoDrillRefuel); if c_autoDrillRefuel then Config.autoDrillRefuel = v_autoDrillRefuel end
             if Config.autoDrillRefuel then
                 local c_drillFuelThreshold, v_drillFuelThreshold = imgui.sliderInt("Fuel Threshold##fuel", Config.drillFuelThreshold, 100, 10000); if c_drillFuelThreshold then Config.drillFuelThreshold = v_drillFuelThreshold end
-                if imgui.radioButton("Volta##fuel", Config.drillFuelType == "Volta") then Config.drillFuelType = "Volta" end
-                if imgui.radioButton("Oil Barrel##fuel", Config.drillFuelType == "Oil Barrel") then Config.drillFuelType = "Oil Barrel" end
+                local c1 = imgui.selectable("Volta##fuel", Config.drillFuelType == "Volta"); if c1 then Config.drillFuelType = "Volta" end
+                local c2 = imgui.selectable("Oil Barrel##fuel", Config.drillFuelType == "Oil Barrel"); if c2 then Config.drillFuelType = "Oil Barrel" end
             end
             imgui.separator()
     
