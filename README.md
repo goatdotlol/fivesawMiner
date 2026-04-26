@@ -1,6 +1,6 @@
-# ⛏️ fivesawMiner
+# fivesawMiner
 
-> **Full Hypixel Skyblock Mining Bot for NeoScripts** — Commission, Glacial, Route, and Freemine macros.
+> **Full Hypixel Skyblock Mining Bot for NeoScripts** | Commission, Glacial, Route, and Freemine macros.
 
 <div align="center">
 
@@ -10,61 +10,61 @@
 ![Build](https://img.shields.io/github/actions/workflow/status/goatdotlol/fivesawMiner/lua-check.yml?label=syntax%20check)
 
 **A complete 1:1 port of MightyMiner v2 to Lua.**
-4 macros • 13 failsafes • auto-detection • humanized movement • one file.
+4 macros | 13 failsafes | auto-detection | humanized movement | single file.
 
 </div>
 
 ---
 
-## 🎮 Macros
+## Macros
 
 | Macro | Description | States |
 |---|---|---|
-| ⚒️ **Commission** | Auto-completes Dwarven Mines commissions | Starting → Mining/Slaying → Claiming → Warping |
-| 🧊 **Glacial** | Mines glacite veins in Glacite Tunnels | Mining → VeinScan → Pathfinding → Claiming |
-| ⛏️ **Mining** | Simple mining loop at current location | BlockMiner loop with auto-restart |
-| 🗺️ **Route** | Follows waypoint route + mines at each stop | Moving → Mining → Next Waypoint |
+| [*] **Commission** | Auto-completes Dwarven Mines commissions | Starting -> Mining/Slaying -> Claiming -> Warping |
+| [*] **Glacial** | Mines glacite veins in Glacite Tunnels | Mining -> VeinScan -> Pathfinding -> Claiming |
+| [*] **Mining** | Simple mining loop at current location | BlockMiner loop with auto-restart |
+| [*] **Route** | Follows waypoint route + mines at each stop | Moving -> Mining -> Next Waypoint |
 
-## ✨ Features
+## Features
 
 ### Mining Engine
-- 🎯 **28 ore types** — Mithril (gray/green/blue), Titanium, Glacite, Hardstone, Umber, Tungsten, Diamond, Emerald, Gold, and more
-- 📊 **Smart block selection** — Cost-based scoring (mining speed × distance × angle change)
-- ⚡ **Pickaxe abilities** — Mining Speed Boost, Pickobulus with auto-detection
-- 🔄 **Auto mining speed detection** — Reads speed from item lore automatically
+* **28 ore types** -- Mithril (gray/green/blue), Titanium, Glacite, Hardstone, Umber, Tungsten, Diamond, Emerald, Gold, and more
+* **Smart block selection** -- Cost-based scoring (mining speed * distance * angle change)
+* **Pickaxe abilities** -- Mining Speed Boost, Pickobulus with auto-detection
+* **Auto mining speed detection** -- Reads speed from item lore automatically
 
 ### Commission System
-- 📋 **Auto commission detection** — Parses tablist for active commissions
-- 🏆 **Priority system** — Picks best commission (mining > slayer)
-- 🐦 **Dual claiming** — Royal Pigeon or walk-to-emissary
-- ⚔️ **Slayer support** — Auto mob killer for Goblin/Glacite Walker commissions
-- 🔄 **Full loop** — Claim → get new commission → mine → repeat
+* **Auto commission detection** -- Parses tablist for active commissions
+* **Priority system** -- Picks best commission (mining > slayer)
+* **Dual claiming** -- Royal Pigeon or walk-to-emissary
+* **Slayer support** -- Auto mob killer for Goblin/Glacite Walker commissions
+* **Full loop** -- Claim -> get new commission -> mine -> repeat
 
 ### Failsafes (13 Total)
 | Failsafe | Trigger |
 |---|---|
-| 💬 Name Mention | Someone says your name in chat |
-| 🌍 World Change | Server sends you to a different world |
-| 📦 Item Change | Mining tool disappears from hotbar |
-| 👤 Profile Change | SkyBlock profile swap detected |
-| 💥 Knockback | Sudden position change (>3 blocks/tick) |
-| 🔌 Disconnect | Connection lost (auto-reconnect × 5) |
-| 🧱 Bedrock Surround | Surrounded by bedrock (wrong area) |
-| 👥 Player Nearby | Non-NPC player within 3 blocks for 3+ sec |
-| ☄️ Teleport | Server-forced position change |
-| 🔄 Rotation | Server-forced rotation change |
-| 🎰 Slot Change | Hotbar slot forcefully changed |
-| ☠️ Bad Effect | Harmful potion effects detected |
-| 🪨 Bedrock Block | Bedrock appearing where it shouldn't |
+| [!] Name Mention | Someone says your name in chat |
+| [!] World Change | Server sends you to a different world |
+| [!] Item Change | Mining tool disappears from hotbar |
+| [!] Profile Change | SkyBlock profile swap detected |
+| [!] Knockback | Sudden position change (>3 blocks/tick) |
+| [!] Disconnect | Connection lost (auto-reconnect x 5) |
+| [!] Bedrock Surround | Surrounded by bedrock (wrong area) |
+| [!] Player Nearby | Non-NPC player within 3 blocks for 3+ sec |
+| [!] Teleport | Server-forced position change |
+| [!] Rotation | Server-forced rotation change |
+| [!] Slot Change | Hotbar slot forcefully changed |
+| [!] Bad Effect | Harmful potion effects detected |
+| [!] Bedrock Block | Bedrock appearing where it shouldn't |
 
 ### Extras
-- ⛽ **Auto Drill Refuel** — Detects low fuel, opens Abiphone → Greatforge → refuels
-- 🗺️ **Route System** — Hardcoded defaults + JSON file loader
-- 🎨 **ImGui Config** — Full settings panel (press F6)
-- 📊 **HUD Overlay** — Uptime, state, commission count, target block
-- 🐛 **Debug Renderer** — Target block highlight in-world
+* **Auto Drill Refuel** -- Detects low fuel, opens Abiphone -> Greatforge -> refuels
+* **Route System** -- Hardcoded defaults + JSON file loader
+* **ImGui Config** -- Full settings panel (press F6)
+* **HUD Overlay** -- Uptime, state, commission count, target block
+* **Debug Renderer** -- Target block highlight in-world
 
-## 📥 Installation
+## Installation
 
 1. Download **both files**
 2. Drop them in NeoScripts:
@@ -72,16 +72,16 @@
 ```
 NeoScripts/
 ├── libs/
-│   └── fivesawUtils.lua     ← pathfinding library
+│   └── fivesawUtils.lua     <-- pathfinding library
 └── scripts/
-    └── fivesawMiner.lua     ← this macro
+    └── fivesawMiner.lua     <-- this macro
 ```
 
-3. Launch NeoScripts — press **F6** to configure
+3. Launch NeoScripts -- press **F6** to configure
 
-> ⚠️ **Requires `fivesawUtils.lua`** — the pathfinding library. Get it from [fivesawUtils](https://github.com/goatdotlol/fivesawUtils).
+> **Note:** Requires `fivesawUtils.lua` -- the pathfinding library. Get it from [fivesawUtils](https://github.com/goatdotlol/fivesawUtils).
 
-## 🎮 Usage
+## Usage
 
 ### Config Panel (F6)
 Press **F6** in-game to open the full config panel:
@@ -107,30 +107,30 @@ Press **F6** in-game to open the full config panel:
 | `#fsdebug` | Toggle debug mode |
 | `#fshelp` | Show all commands |
 
-## 🛡️ Anti-Cheat Design
+## Anti-Cheat Design
 
 Every interaction is designed to look human:
 
-- **Bézier Curve Rotations** — Cubic Bézier with randomized control points (not linear snapping)
-- **Server-Side Rotation** — Uses `setSilentRotation` for legitimate server packets
-- **Real Key Presses** — All movement via `input.setPressed*`
-- **Humanized Timing** — Rotation time scales with angle, randomized delays
-- **Mining Jitter** — Slight random offsets on block targeting
-- **Attack Cooldown** — Respects 1.21 combat cooldown for mob killing
+- **Bezier Curve Rotations** -- Cubic Bezier with randomized control points (not linear snapping)
+- **Server-Side Rotation** -- Uses `setSilentRotation` for legitimate server packets
+- **Real Key Presses** -- All movement via `input.setPressed*`
+- **Humanized Timing** -- Rotation time scales with angle, randomized delays
+- **Mining Jitter** -- Slight random offsets on block targeting
+- **Attack Cooldown** -- Respects 1.21 combat cooldown for mob killing
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 fivesawMiner.lua (bundled)
-├── core         — Clock, GameState, RotationHandler (Bézier), MacroBase
-├── block_miner  — 28 MineableBlocks, BlockScanner, BlockMiner state machine
-├── utils        — Commission, Failsafes, AutoMobKiller, DrillRefuel, NPC, VeinScanner  
-├── macros       — MiningMacro, CommissionMacro, GlacialMacro, RouteMiner
-├── route_data   — Default waypoints + JSON loader
-└── init         — MacroManager, ImGui, HUD, Commands, Renderer
+├── core         -- Clock, GameState, RotationHandler (Bezier), MacroBase
+├── block_miner  -- 28 MineableBlocks, BlockScanner, BlockMiner state machine
+├── utils        -- Commission, Failsafes, AutoMobKiller, DrillRefuel, NPC, VeinScanner  
+├── macros       -- MiningMacro, CommissionMacro, GlacialMacro, RouteMiner
+├── route_data   -- Default waypoints + JSON loader
+└── init         -- MacroManager, ImGui, HUD, Commands, Renderer
 ```
 
-## 📄 Route File Format
+## Route File Format
 
 Custom routes use simple JSON:
 ```json
@@ -141,22 +141,20 @@ Custom routes use simple JSON:
 ]
 ```
 
-## 📄 License
+## License
 
-MIT — Free to use, modify, and distribute.
+MIT -- Free to use, modify, and distribute.
 
-## 🙏 Credits
+## Credits
 
-- **MightyMiner** by JellyLabScripts — original Java mod this is ported from
-- **Baritone** — pathfinding algorithms
-- **fivesaw** — Lua port, humanization, anti-cheat design
+* **MightyMiner** by JellyLabScripts -- original Java mod this is ported from
+* **Baritone** -- pathfinding algorithms
+* **fivesaw** -- Lua port, humanization, anti-cheat design
 
 ---
 
 <div align="center">
 
-**Made by [fivesaw](https://github.com/goatdotlol)** ⛏️
-
-*If this helped you, star the repo ⭐*
+**Made by [fivesaw](https://github.com/goatdotlol)**
 
 </div>
